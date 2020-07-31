@@ -22,7 +22,7 @@ LastEditTime: 2020-07-30 16:20:40
 
 // const printer = new escpos.Printer(device, options);
 // @ is an alias to /src
-// const httpServer = require("http-server");
+
 import HelloWorld from "@/components/HelloWorld.vue";
 
 export default {
@@ -59,8 +59,6 @@ export default {
       // });
     }
   },
-  mounted() {
-    // httpServer.createServer().listen(8964);
-  }
+  mounted() {}
 };
 </script>

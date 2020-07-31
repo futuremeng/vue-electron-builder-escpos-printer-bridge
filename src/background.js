@@ -22,7 +22,7 @@ function createWindow() {
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
-      nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION
+      nodeIntegration: true //process.env.ELECTRON_NODE_INTEGRATION
     }
   });
 
@@ -87,3 +87,61 @@ if (isDevelopment) {
     });
   }
 }
+
+const escpos = require("escpos");
+escpos.USB = require("escpos-usb");
+const { ipcMain } = require("electron");
+
+ipcMain.on("print", (event, arg) => {
+  // console.log(arg) // receive data from arg
+  print(arg);
+});
+const print = arg => {
+  setTimeout(() => {
+    console.log("test print start", arg);
+    console.log(escpos.USB.findPrinter());
+
+    // Select the adapter based on your printer type
+    // const device = new escpos.USB("0x0fe6", "0x811e");
+    // const device  = new escpos.Network('localhost');
+    // const device  = new escpos.Serial('/dev/usb/lp0');
+
+    // const options = { encoding: "GB18030" /* default */ };
+    // encoding is optional
+
+    //   const printer = new escpos.Printer(device, options);
+
+    //   device.open(function() {
+    //     printer
+    //       .font("a")
+    //       .align("ct")
+    //       .style("bu")
+    //       .size(1, 1)
+    //       .text(arg)
+    //       .size(0.001, 0.001)
+    //       .tableCustom(
+    //         [
+    //           {
+    //             text: "Apple                         200",
+    //             align: "LEFT",
+    //             width: 0.5
+    //           },
+    //           {
+    //             text: "Orange                        200",
+    //             align: "LEFT",
+    //             width: 0.5
+    //           }
+    //         ],
+    //         { encoding: "cp857", size: [2, 1] } // Optional
+    //       )
+    //       .qrimage("https://github.com/song940/node-escpos", function(err) {
+    //         console.log(err);
+    //         this.cut();
+    //         this.close();
+    //       })
+    //       .text("Thanks YOU!");
+    //   });
+
+    //   console.log("test print end");
+  }, 1000);
+};
