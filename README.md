@@ -1,7 +1,7 @@
 <!--
  * @Date: 2020-07-30 11:26:05
  * @LastEditors: Future Meng
- * @LastEditTime: 2020-07-30 15:00:24
+ * @LastEditTime: 2020-08-04 09:47:22
 --> 
 # vue-electron-builder-escpos-printer-bridge
 
@@ -47,3 +47,9 @@ yarn electron:build
 or with NPM:
 
 npm run electron:build
+
+### rebuild
+
+$(npm bin)/electron-rebuild
+
+./node_modules/.bin/electron-rebuild

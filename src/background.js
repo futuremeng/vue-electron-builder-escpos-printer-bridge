@@ -71,6 +71,23 @@ app.on("ready", async () => {
     }
   }
   createWindow();
+
+  var usbDetect = require("usb-detection");
+
+  usbDetect.startMonitoring();
+
+  // Detect add/insert
+  usbDetect.on("add", function(device) {
+    console.log("add", device);
+  });
+  usbDetect.on("add:vid", function(device) {
+    console.log("add", device);
+  });
+  usbDetect.on("add:vid:pid", function(device) {
+    console.log("add", device);
+  });
+
+  console.log("found usb");
 });
 
 // Exit cleanly on request from parent process in development mode.
@@ -93,55 +110,69 @@ escpos.USB = require("escpos-usb");
 const { ipcMain } = require("electron");
 
 ipcMain.on("print", (event, arg) => {
+  print(event);
   // console.log(arg) // receive data from arg
   print(arg);
 });
 const print = arg => {
   setTimeout(() => {
     console.log("test print start", arg);
-    console.log(escpos.USB.findPrinter());
+
+    // const printers = escpos.USB.findPrinter();
+    // console.log(escpos.USB.findPrinter());
 
     // Select the adapter based on your printer type
-    // const device = new escpos.USB("0x0fe6", "0x811e");
+    // const device = new escpos.USB("2501", "1416");
+
+    const device = new escpos.USB();
+
     // const device  = new escpos.Network('localhost');
     // const device  = new escpos.Serial('/dev/usb/lp0');
 
-    // const options = { encoding: "GB18030" /* default */ };
+    const options = { encoding: "GB18030" /* default */ };
     // encoding is optional
 
-    //   const printer = new escpos.Printer(device, options);
+    const printer = new escpos.Printer(device, options);
 
-    //   device.open(function() {
-    //     printer
-    //       .font("a")
-    //       .align("ct")
-    //       .style("bu")
-    //       .size(1, 1)
-    //       .text(arg)
-    //       .size(0.001, 0.001)
-    //       .tableCustom(
-    //         [
-    //           {
-    //             text: "Apple                         200",
-    //             align: "LEFT",
-    //             width: 0.5
-    //           },
-    //           {
-    //             text: "Orange                        200",
-    //             align: "LEFT",
-    //             width: 0.5
-    //           }
-    //         ],
-    //         { encoding: "cp857", size: [2, 1] } // Optional
-    //       )
-    //       .qrimage("https://github.com/song940/node-escpos", function(err) {
-    //         console.log(err);
-    //         this.cut();
-    //         this.close();
-    //       })
-    //       .text("Thanks YOU!");
-    //   });
+    device.open(function() {
+      // printer
+      // .font("a")
+      // .align("ct")
+      // .style("bu")
+      // .size(1, 1)
+      // .text(arg)
+      // .size(0.001, 0.001)
+      // .tableCustom(
+      //   [
+      //     {
+      //       text: "Apple                         200",
+      //       align: "LEFT",
+      //       width: 0.5
+      //     },
+      //     {
+      //       text: "Orange                        200",
+      //       align: "LEFT",
+      //       width: 0.5
+      //     }
+      //   ],
+      //   { encoding: "cp857", size: [2, 1] } // Optional
+      // )
+      // .qrimage("https://github.com/song940/node-escpos", function(err) {
+      //   console.log(err);
+      //   this.cut();
+      //   this.close();
+      // })
+      // .text("Thanks YOU!");
+      printer
+        .font("a")
+        .align("ct")
+        .style("bu")
+        .size(1, 1)
+        .text("Thanks YOU!")
+        .cut()
+        .close();
+    });
 
-    //   console.log("test print end");
+    console.log("test print end");
   }, 1000);
 };
