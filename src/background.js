@@ -110,7 +110,7 @@ escpos.USB = require("escpos-usb");
 const { ipcMain } = require("electron");
 
 ipcMain.on("print", (event, arg) => {
-  print(event);
+  console.log(event);
   // console.log(arg) // receive data from arg
   print(arg);
 });
